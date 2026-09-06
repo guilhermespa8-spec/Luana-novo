@@ -1,0 +1,6 @@
+{
+  "name": "Estética Facial e Corporal",
+  "description": "Sistema básico de controle pessoal para estética facial e corporal com agenda de atendimentos e cadastro de clientes com ficha estética.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
