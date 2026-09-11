@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AutoPartsCatalog } from './components/AutoParts/AutoPartsCatalog';
 import { Navbar } from './components/Navbar';
 import { AgendaView } from './components/Agenda/AgendaView';
 import { AppointmentModal } from './components/Agenda/AppointmentModal';
@@ -15,6 +16,8 @@ import {
 } from './utils/storage';
 
 export default function App() {
+  return <AutoPartsCatalog />;
+
   // Navigation: strictly personal Agenda and Clients
   const [activeTab, setActiveTab] = useState<'agenda' | 'clients'>('agenda');
 
