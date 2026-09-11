@@ -1,12 +1,14 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   CarFront,
   ChevronRight,
   CircleAlert,
   Filter,
   PackageSearch,
+  Plus,
   Search,
   ShoppingBag,
+  Upload,
   X,
 } from 'lucide-react';
 import {
@@ -43,10 +45,83 @@ const getStockInfo = (stock: number) => {
 };
 
 export const AutoPartsCatalog: React.FC = () => {
-  const [products] = useState<AutoPartProduct[]>(initialAutoPartProducts);
+  const [products, setProducts] = useState<AutoPartProduct[]>(() => {
+    try {
+      const storedProducts = localStorage.getItem('abrantes_auto_parts_products_v1');
+      return storedProducts ? JSON.parse(storedProducts) : initialAutoPartProducts;
+    } catch {
+      return initialAutoPartProducts;
+    }
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [selectedProduct, setSelectedProduct] = useState<AutoPartProduct | null>(null);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [productForm, setProductForm] = useState({
+    name: '',
+    category: 'Lavagem',
+    code: '',
+    price: '',
+    stock: '',
+    description: '',
+    compatibility: '',
+    imageUrl: '',
+  });
+
+  useEffect(() => {
+    localStorage.setItem('abrantes_auto_parts_products_v1', JSON.stringify(products));
+  }, [products]);
+
+  const resetProductForm = () => {
+    setProductForm({
+      name: '',
+      category: 'Lavagem',
+      code: '',
+      price: '',
+      stock: '',
+      description: '',
+      compatibility: '',
+      imageUrl: '',
+    });
+  };
+
+  const handleProductImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setProductForm((current) => ({
+        ...current,
+        imageUrl: String(reader.result),
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddProduct = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!productForm.name || !productForm.price || !productForm.imageUrl) return;
+
+    const newProduct: AutoPartProduct = {
+      id: `part-${Date.now()}`,
+      name: productForm.name,
+      brand: 'Vonixx',
+      category: productForm.category,
+      code: productForm.code || `ABR-${Date.now().toString().slice(-5)}`,
+      price: Number(productForm.price),
+      stock: Number(productForm.stock) || 0,
+      description: productForm.description,
+      compatibility: productForm.compatibility || 'Consulte a compatibilidade com nossa equipe',
+      imageUrl: productForm.imageUrl,
+    };
+
+    setProducts((current) => [newProduct, ...current]);
+    setIsProductModalOpen(false);
+    resetProductForm();
+  };
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -145,6 +220,14 @@ export const AutoPartsCatalog: React.FC = () => {
                 {filteredProducts.length} produto(s) encontrado(s)
               </p>
             </div>
+
+            <button
+              onClick={() => setIsProductModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-rose-700"
+            >
+              <Plus className="h-4 w-4" />
+              Adicionar produto
+            </button>
 
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               <Filter className="h-4 w-4 shrink-0 text-stone-400" />
@@ -249,6 +332,190 @@ export const AutoPartsCatalog: React.FC = () => {
           </p>
         </div>
       </footer>
+
+      {isProductModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-stone-900/60 p-4 backdrop-blur-sm"
+          onClick={() => {
+            setIsProductModalOpen(false);
+            resetProductForm();
+          }}
+        >
+          <form
+            onSubmit={handleAddProduct}
+            onClick={(event) => event.stopPropagation()}
+            className="w-full max-w-2xl rounded-2xl border border-stone-200 bg-white shadow-xl"
+          >
+            <div className="flex items-center justify-between border-b border-stone-200 p-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-rose-600">
+                  Estoque Abrantes
+                </p>
+                <h2 className="mt-1 font-serif text-2xl font-bold text-stone-900">
+                  Adicionar produto Vonixx
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsProductModalOpen(false);
+                  resetProductForm();
+                }}
+                className="rounded-xl p-2 text-stone-500 transition hover:bg-stone-100 hover:text-stone-900"
+                aria-label="Fechar formulário"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="grid gap-4 p-6 sm:grid-cols-2">
+              <label className="sm:col-span-2">
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">
+                  Nome do produto *
+                </span>
+                <input
+                  required
+                  value={productForm.name}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, name: event.target.value }))
+                  }
+                  placeholder="Ex.: V-Floc Shampoo Automotivo"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+
+              <label>
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Categoria</span>
+                <select
+                  value={productForm.category}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, category: event.target.value }))
+                  }
+                  className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                >
+                  {autoPartCategories
+                    .filter((category) => category !== 'Todos')
+                    .map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                </select>
+              </label>
+
+              <label>
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Código</span>
+                <input
+                  value={productForm.code}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, code: event.target.value }))
+                  }
+                  placeholder="Ex.: VNX-001"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+
+              <label>
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Preço (R$) *</span>
+                <input
+                  required
+                  min="0"
+                  step="0.01"
+                  type="number"
+                  value={productForm.price}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, price: event.target.value }))
+                  }
+                  placeholder="0,00"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+
+              <label>
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Quantidade em estoque</span>
+                <input
+                  min="0"
+                  type="number"
+                  value={productForm.stock}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, stock: event.target.value }))
+                  }
+                  placeholder="0"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+
+              <label className="sm:col-span-2">
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Foto do produto *</span>
+                <div className="rounded-xl border border-dashed border-stone-300 bg-stone-50 p-4">
+                  <input
+                    required={!productForm.imageUrl}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProductImageChange}
+                    className="block w-full text-xs text-stone-500 file:mr-3 file:rounded-lg file:border-0 file:bg-rose-50 file:px-3 file:py-2 file:text-xs file:font-bold file:text-rose-700 hover:file:bg-rose-100"
+                  />
+                  {productForm.imageUrl && (
+                    <img
+                      src={productForm.imageUrl}
+                      alt="Pré-visualização do produto"
+                      className="mt-3 h-32 w-full rounded-lg object-cover"
+                    />
+                  )}
+                  <p className="mt-2 text-[11px] text-stone-500">
+                    Escolha uma imagem do produto no seu dispositivo.
+                  </p>
+                </div>
+              </label>
+
+              <label className="sm:col-span-2">
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Descrição</span>
+                <textarea
+                  rows={3}
+                  value={productForm.description}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, description: event.target.value }))
+                  }
+                  placeholder="Descreva o produto, seus benefícios e modo de uso."
+                  className="w-full resize-none rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+
+              <label className="sm:col-span-2">
+                <span className="mb-1.5 block text-xs font-bold text-stone-700">Compatibilidade</span>
+                <input
+                  value={productForm.compatibility}
+                  onChange={(event) =>
+                    setProductForm((current) => ({ ...current, compatibility: event.target.value }))
+                  }
+                  placeholder="Ex.: Indicado para todos os tipos de pintura"
+                  className="w-full rounded-xl border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-200"
+                />
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-stone-200 p-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsProductModalOpen(false);
+                  resetProductForm();
+                }}
+                className="rounded-xl border border-stone-200 px-4 py-2.5 text-xs font-bold text-stone-600 transition hover:bg-stone-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-rose-700"
+              >
+                <Upload className="h-4 w-4" />
+                Salvar produto
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {selectedProduct && (
         <div
