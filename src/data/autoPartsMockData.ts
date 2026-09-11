@@ -31,7 +31,7 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 12,
     description: 'Shampoo automotivo de alta performance para uma lavagem segura e eficiente.',
     compatibility: 'Indicado para todos os tipos de pintura automotiva',
-    imageUrl: 'https://picsum.photos/seed/brake-pads/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-shampoo/800/600',
   },
   {
     id: 'part-2',
@@ -43,7 +43,7 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 4,
     description: 'Limpador multiuso para higienização de superfícies internas e externas.',
     compatibility: 'Painéis, plásticos, borrachas, carpetes e superfícies automotivas',
-    imageUrl: 'https://picsum.photos/seed/shock-absorber/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-cleaner/800/600',
   },
   {
     id: 'part-3',
@@ -55,7 +55,7 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 0,
     description: 'Cera líquida que proporciona brilho intenso e proteção para a pintura.',
     compatibility: 'Compatível com pinturas automotivas novas ou vitrificadas',
-    imageUrl: 'https://picsum.photos/seed/timing-belt/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-wax/800/600',
   },
   {
     id: 'part-4',
@@ -67,7 +67,7 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 7,
     description: 'Cera premium com proteção cerâmica e carnaúba para acabamento sofisticado.',
     compatibility: 'Indicada para pintura automotiva e uso profissional',
-    imageUrl: 'https://picsum.photos/seed/car-battery/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-ceramic/800/600',
   },
   {
     id: 'part-5',
@@ -79,7 +79,7 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 28,
     description: 'Composto polidor para remoção de riscos e marcas mais profundas na pintura.',
     compatibility: 'Uso com politriz em pinturas automotivas',
-    imageUrl: 'https://picsum.photos/seed/oil-filter/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-polish/800/600',
   },
   {
     id: 'part-6',
@@ -91,6 +91,6 @@ export const initialAutoPartProducts: AutoPartProduct[] = [
     stock: 3,
     description: 'Produto para limpeza e renovação do aspecto dos pneus do veículo.',
     compatibility: 'Indicado para pneus e superfícies externas de borracha',
-    imageUrl: 'https://picsum.photos/seed/car-led/800/600',
+    imageUrl: 'https://picsum.photos/seed/vonixx-tire-cleaner/800/600',
   },
 ];

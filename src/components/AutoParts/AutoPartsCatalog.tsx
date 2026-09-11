@@ -109,7 +109,8 @@ export const AutoPartsCatalog: React.FC = () => {
 
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-stone-600 sm:text-base">
                 Encontre produtos Vonixx para lavagem, polimento, proteção e
-                conservação do seu veículo.
+                conservação do seu veículo. Qualidade profissional para deixar
+                seu carro sempre bem cuidado.
               </p>
 
               <div className="relative mt-7 max-w-xl">
@@ -126,8 +127,8 @@ export const AutoPartsCatalog: React.FC = () => {
 
             <div className="hidden overflow-hidden rounded-3xl border-4 border-white bg-stone-200 shadow-xl lg:block">
               <img
-                src="https://picsum.photos/seed/auto-parts-store/1000/700"
-                alt="Peças automotivas"
+                src="https://images.pexels.com/photos/34337558/pexels-photo-34337558.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                alt="Oficina automotiva com ferramentas e elevadores"
                 className="h-72 w-full object-cover"
               />
             </div>
@@ -236,6 +237,18 @@ export const AutoPartsCatalog: React.FC = () => {
           )}
         </section>
       </main>
+
+      <footer className="border-t border-stone-200 bg-stone-900 px-4 py-8 text-stone-300 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-bold text-white">Abrantes Autopeças</p>
+            <p className="mt-1">Produtos Vonixx para cuidado automotivo.</p>
+          </div>
+          <p>
+            Foto da oficina: Paco DP via Pexels
+          </p>
+        </div>
+      </footer>
 
       {selectedProduct && (
         <div
