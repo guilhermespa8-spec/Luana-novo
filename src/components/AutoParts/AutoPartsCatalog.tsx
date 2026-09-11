@@ -79,10 +79,10 @@ export const AutoPartsCatalog: React.FC = () => {
             </div>
             <div>
               <p className="font-serif text-xl font-bold tracking-tight text-stone-900">
-                AutoMais Peças
+                Abrantes Autopeças
               </p>
               <p className="text-xs font-medium text-stone-500">
-                Peças e acessórios para o seu veículo
+                Produtos Vonixx para cuidado e estética automotiva
               </p>
             </div>
           </div>
@@ -108,8 +108,8 @@ export const AutoPartsCatalog: React.FC = () => {
               </h1>
 
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-stone-600 sm:text-base">
-                Consulte nosso catálogo de peças, veja a disponibilidade em estoque
-                e encontre produtos para manutenção, segurança e desempenho.
+                Encontre produtos Vonixx para lavagem, polimento, proteção e
+                conservação do seu veículo.
               </p>
 
               <div className="relative mt-7 max-w-xl">
